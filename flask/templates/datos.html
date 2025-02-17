@@ -1,0 +1,7 @@
+{%block titulo%}<title>Sube tu fichero</title>{%endblock%} 
+{%block cuerpo%}
+<form method="post" enctype="multipart/form-data" action = '{{url_for("datos")}}'>
+    <input type="file" name="file">
+    <input type="submit" value="Upload">
+</form>
+{%endblock%}

@@ -66,9 +66,9 @@ def calcular_primas_jubilacion(salario_final, anios_trabajados, anios_hasta_jubi
     }
 
 # Ejemplo de uso
-salario_final = 3000  # Última nómina del empleado
-anios_trabajados = 20  # Años en la empresa
-anios_hasta_jubilacion = 10  # Años restantes hasta la jubilación
+salario_final = 3  # Última nómina del empleado
+anios_trabajados = 34  # Años en la empresa
+anios_hasta_jubilacion = 13  # Años restantes hasta la jubilación
 
 resultado = calcular_primas_jubilacion(salario_final, anios_trabajados, anios_hasta_jubilacion)
 print(resultado)
