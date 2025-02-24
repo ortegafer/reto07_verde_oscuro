@@ -1,74 +1,58 @@
+def calculo_nomina(salario_actual, años_hasta_jubilación):
+    import math
+    import pandas as pd
+    redondeado = math.floor(años_hasta_jubilación)
+    salario = salario_actual
+    ipc= pd.read_excel('Datos/Originales/Dataset_1.xlsx', sheet_name='IPC')
+    for i in range(0, redondeado):
+        salario = salario + salario*ipc.iloc[i,1]
+    return float(salario)
 
-def calcular_primas_jubilacion(salario_final, anios_trabajados, anios_hasta_jubilacion):
-    # Parámetros
-    crecimiento_renta = 0.03  # 3% de incremento anual de la renta
-    tipo_interes_ahorro_1 = 0.025  # 2.5% los primeros 7 años
-    tipo_interes_ahorro_2 = 0.02   # 2% después
-    tipo_interes_renta_1 = 0.02    # 2% los primeros 6 años y 9 meses
-    tipo_interes_renta_2 = 0.015   # 1.5% después
-    duracion_renta_anios = 22
-    meses_renta = duracion_renta_anios * 12
+def calcular_primas_jubilacion(salario, años_trabajados, años_hasta_jubilacion, fecha_jubilación):
+    salario_final= calculo_nomina(salario, años_hasta_jubilacion)
+    porcentaje_renta = min((años_trabajados // 4) * 0.0225, 0.19)
+    m1 = (salario_final * porcentaje_renta)/12
+    import datetime as dt
+    import pandas as pd
+    date_range = pd.date_range(start=fecha_jubilación, periods=22*12, freq='MS')
+    date_list = date_range.strftime('%Y-%m').tolist()
+    intereses= []
+    for i in range(0, 6*12+9):
+        intereses.append(0.00165)
+    for i in range(0, (22*12) - (6*12+9)):
+        intereses.append(0.00124)
+    rentas = []
+    valor =m1
+    for fecha in date_list:
+        mes = fecha[-2:] 
+        if mes == '01':
+            valor *= 1.03 
+        rentas.append(valor)
+    df = pd.DataFrame({'Fecha': date_list, 'Intereses': intereses, 'Pagos': rentas})
+    capital_jubilacion = 0
+    for i in range(len(df)-1, -1, -1):
+        renta = float(df.iloc[i,2]) * (1+float(df.iloc[i,1]))**-1
+        for interes in range(i, -1, -1):
+            renta = renta * (1+float(df.iloc[interes,1]))**-1
+        capital_jubilacion += renta
+    #pasarlo a 2025
+    fechas = pd.date_range(start='2025-01-01', end=fecha_jubilación, freq='MS')
+    fechas_formateadas = fechas.strftime('%Y-%m')
     
-    # Cálculo de la renta inicial
-    porcentaje_renta = min((anios_trabajados // 4) * 0.0225, 0.19)
-    renta_mensual = salario_final * porcentaje_renta
+    intereses1= []
+    for i in range(0, 7*12):
+        intereses1.append(0.00165)
+    for i in range(0, len(fechas_formateadas) - 7*12):
+        intereses1.append(0.00205)
     
-    # Cálculo del valor actual de la renta con crecimiento del 3%
-    VA = 0
-    umbral = 6 * 12 + 9  # 81 meses
+    df1 = pd.DataFrame({'Fecha': fechas_formateadas, 'Intereses': intereses1})
     
-    for t in range(1, meses_renta + 1):
-        # Calcular el pago mensual con crecimiento anual
-        R_t = renta_mensual * (1 + crecimiento_renta) ** (t // 12)
-        
-        if t < umbral:
-            # Factor de descuento para t menor a umbral
-            DF = (1 + tipo_interes_renta_1/12) ** t
-        else:
-            # Para t >= umbral: descontamos hasta el umbral con la tasa 1
-            # y el resto con la tasa 2
-            DF = (1 + tipo_interes_renta_1/12) ** umbral * (1 + tipo_interes_renta_2/12) ** (t - umbral)
-        
-        VA += R_t / DF
+    capital_actual= capital_jubilacion
+    for i in range(len(df1)-1, -1, -1):
+        capital_actual = capital_actual * (1+float(df1.iloc[i,1]))**-1
+    
+    capital_actual
 
-    
-    # Crecimiento del ahorro hasta la jubilación
-    if anios_hasta_jubilacion <= 7:
-        VA_en_hoy = VA / ((1 + tipo_interes_ahorro_1) ** anios_hasta_jubilacion)
-    else:
-        VA_en_hoy = VA / ((1 + tipo_interes_ahorro_1) ** 7 * (1 + tipo_interes_ahorro_2) ** (anios_hasta_jubilacion - 7))
-    
-    
-    # Cálculo de la prima mensual (ajustado para el rendimiento de las inversiones)
-    n = anios_hasta_jubilacion * 12  # Número total de meses
+    return capital_jubilacion, capital_actual
 
-    # Cálculo del valor presente de los primeros 7 años
-    n_1 = min(7 * 12, n)  # Número de meses hasta 7 años
-    i_mensual_1 = tipo_interes_ahorro_1 / 12
-    VA_1 = VA_en_hoy * (i_mensual_1) / ((1 + i_mensual_1) ** n_1 - 1) if n_1 > 0 else 0
-
-    # Cálculo del valor presente de los años después de 7 años
-    n_2 = max(n - 7 * 12, 0)  # Número de meses después de los 7 primeros años
-    i_mensual_2 = tipo_interes_ahorro_2 / 12
-    VA_2 = VA_en_hoy * (i_mensual_2) / ((1 + i_mensual_2) ** n_2 - 1) if n_2 > 0 else 0
-
-    # La prima mensual es la suma de ambos valores presentes
-    prima_mensual = VA_1 + VA_2
-    prima_unica_2025 = VA_en_hoy
-    prima_unica_jubilacion = VA
-    
-    return {
-        "VA en la jubilación": VA,
-        "VA hoy": VA_en_hoy,
-        "Prima mensual": prima_mensual,
-        "Prima única en 2025": prima_unica_2025,
-        "Prima única en la jubilación": prima_unica_jubilacion
-    }
-
-# Ejemplo de uso
-salario_final = 3  # Última nómina del empleado
-anios_trabajados = 34  # Años en la empresa
-anios_hasta_jubilacion = 13  # Años restantes hasta la jubilación
-
-resultado = calcular_primas_jubilacion(salario_final, anios_trabajados, anios_hasta_jubilacion)
-print(resultado)
+print(calcular_primas_jubilacion(15319.07,36,13.55, '2038-11-20'))
