@@ -8,8 +8,8 @@ import importlib.util
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
 
-app = Flask(__name__)
-app.secret_key = 'clave_secreta'
+app = Flask(__name__, template_folder='flask/templates')
+app.secret_key = 'jjjjj'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -37,8 +37,8 @@ def importar_modulo(ruta, nombre_modulo):
     spec.loader.exec_module(modulo)
     return modulo
 
-finanzas1 = importar_modulo('flask/static/scripts/03-Funcion_Finanzas1.py', 'finanzas1')
-finanzas2 = importar_modulo('flask/static/scripts/04-Funcion_Finanzas2.py', 'finanzas2')
+finanzas1 = importar_modulo('flask/static/scripts/Funcion_Finanzas1.py', 'finanzas1')
+finanzas2 = importar_modulo('flask/static/scripts/Funcion_Finanzas2.py', 'finanzas2')
 
 
 class User(UserMixin):
