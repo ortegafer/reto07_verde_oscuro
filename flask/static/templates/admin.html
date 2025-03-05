@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administrador</title>
+</head>
+<body>
+    <h2>Resultados de Todos los Usuarios</h2>
+    <div>{{ tabla | safe }}</div>  <!-- Muestra los resultados en tabla -->
+    <h2>Gráfico de Resultados</h2>
+    <div>{{ grafico | safe }}</div>  <!-- Muestra el gráfico interactivo -->
+    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+</body>
+</html>

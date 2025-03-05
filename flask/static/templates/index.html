@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Principal - Calculadora de Jubilación</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e3e6f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 80%;
+            max-width: 500px;
+        }
+        }
+
+        header h1 {
+            color: #2a3f5f;
+            margin-bottom: 20px;
+        }
+
+        .menu-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .menu-option {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+        }
+
+        .menu-option:hover {
+            background: #2c3e50;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Calculadora de Jubilación</h1>
+            <p>Selecciona una de las siguientes opciones para realizar lo cálculos</p>
+        </header>
+
+        <div class="menu-options">
+            <a href="trabajador_calculadora.html" class="menu-option">Calcular para un Solo Trabajador</a>
+            <a href="csv_calculadora.html" class="menu-option">Cargar CSV con Datos de Varios Trabajadores</a>
+        </div>
+    </div>
+</body>
+</html>
+

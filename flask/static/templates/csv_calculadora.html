@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Jubilación - Grupo de Trabajadores</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #eaeaea;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 650px;
+        }
+
+        header h1 {
+            color: #1a252f;
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        input[type="file"] {
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+            background: #f9f9f9;
+            cursor: pointer;
+        }
+
+        button {
+            background: #2c3e50;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: #1a252f;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Jubilación - Grupo de Trabajadores</h1>
+        <form action="/calcular_grupo" method="post" enctype="multipart/form-data">
+            <label for="archivo">Subir archivo CSV con los datos:</label>
+            <input type="file" id="archivo" name="archivo" accept=".csv" required>
+            <button type="submit">Calcular</button>
+        </form>
+    </div>
+</body>
+</html>
+
