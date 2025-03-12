@@ -9,11 +9,15 @@ def calculo_nomina(salario_actual, años_hasta_jubilación):
     return float(salario)
 
 def calcular_monto_mensual(capital, intereses):
-    n_periodos = len(intereses)
-    sumatorio = sum((1 + intereses[i]) ** (i + 1) for i in range(n_periodos))
-    if sumatorio == 0:
-        return None
-    return capital / sumatorio
+    sum=0
+    for i in range(len(intereses)):
+        num= 1
+        for j in range(0, len(intereses[:i+1])):
+            num*=(1+intereses[j])**(-1)
+        sum+= num
+    
+    monto = capital/sum
+    return monto
 
 def calcular_primas_jubilacion(salario, edad, años_trabajados, interes1, interes2, duración_interes1, interes_rendimiento1, interes_rendimiento2, duración_interés_rendimiento1, fecha_jubilación= None):
     import datetime as dt
@@ -81,6 +85,7 @@ def calcular_primas_jubilacion(salario, edad, años_trabajados, interes1, intere
     monto_mensual = calcular_monto_mensual(capital_jubilacion, df1['Intereses'].tolist())
         
     return capital_jubilacion, capital_actual, monto_mensual
+
 
 print(calcular_primas_jubilacion(15319.07,51,36,2,1.5, [6,9], 2.5, 2, [7,0], '2038-11-20'))
 print(calcular_primas_jubilacion(15319.07,51,36,2,1.5, [6,9], 2.5, 2, [7,0]))

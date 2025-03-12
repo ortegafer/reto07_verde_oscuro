@@ -3,6 +3,7 @@ import pickle
 import math
 import datetime as dt
 
+
 def calculo_nomina(salario_actual, años_hasta_jubilación, ipc):
     redondeado = math.floor(años_hasta_jubilación)
     salario = salario_actual
@@ -11,17 +12,21 @@ def calculo_nomina(salario_actual, años_hasta_jubilación, ipc):
     return float(salario)
 
 def calcular_monto_mensual(capital, intereses):
-    n_periodos = len(intereses)
-    sumatorio = sum((1 + intereses[i]) ** (i + 1) for i in range(n_periodos))
-    return capital / sumatorio
+    sum=0
+    for i in range(len(intereses)):
+        num= 1
+        for j in range(0, len(intereses[:i])):
+            num*=(1+intereses[j])**(-1)
+        sum+= num
+    return capital/sum
 
-def calcular_primas_jubilacion_df(df, ipc, lista_intereses):
+def calcular_primas_jubilacion_df(df, ipc, interes1, interes2, duracion_interes1, interes_rendimiento1, interes_rendimiento2, duracion_interes_rendimiento1):
     resultados = []
     with open("notebooks/Data Mining/modelo.pkl", "rb") as f:
         modelo = pickle.load(f)
     X_2 = df.drop(['ID', 'FECHA NAC', 'SEXO', 'FECHA ENTRADA', 'PARA CONTAR MESES'], axis=1)
     X_2.columns = ['Ingreso Anual (€)','Edad']
-    X_2 = X_2[['Edad','Ingreso Anual (€)']]
+    X_2 = X_2[['Edad','Ingreso Anual (€)']] 
     df["AÑOS HASTA JUBILACION"] = modelo.predict(X_2)
     for _, row in df.iterrows():
         salario_final = calculo_nomina(row['NOMINA BRUTA 01/01/2025'], row['AÑOS HASTA JUBILACION'], ipc)
@@ -33,10 +38,11 @@ def calcular_primas_jubilacion_df(df, ipc, lista_intereses):
         date_range = pd.date_range(start=fecha_jubilacion, periods=22 * 12, freq='MS')
         date_list = date_range.strftime('%Y-%m').tolist()
         
-        if len(lista_intereses) < len(date_list):
-            raise ValueError(f"La lista de intereses es demasiado corta. Se requieren {len(date_list)} valores, pero solo se proporcionaron {len(lista_intereses)}.")
+        int1 = ((1 + (interes1 * 0.01)) ** (1 / 12)) - 1
+        int2 = ((1 + (interes2 * 0.01)) ** (1 / 12)) - 1
+        año1, mes1 = duracion_interes1
         
-        intereses = lista_intereses[:len(date_list)]
+        intereses = [int1] * (año1 * 12 + mes1) + [int2] * ((22 * 12) - (año1 * 12 + mes1))
         
         rentas = []
         valor = m1
@@ -57,10 +63,11 @@ def calcular_primas_jubilacion_df(df, ipc, lista_intereses):
         fechas = pd.date_range(start='2025-01-01', end=fecha_jubilacion, freq='MS')
         fechas_formateadas = fechas.strftime('%Y-%m')
         
-        if len(lista_intereses) < len(fechas_formateadas):
-            raise ValueError(f"La lista de intereses es demasiado corta. Se requieren {len(fechas_formateadas)} valores, pero solo se proporcionaron {len(lista_intereses)}.")
+        int_ren1 = ((1 + (interes_rendimiento1 * 0.01)) ** (1 / 12)) - 1
+        int_ren2 = ((1 + (interes_rendimiento2 * 0.01)) ** (1 / 12)) - 1
+        año2, mes2 = duracion_interes_rendimiento1
         
-        intereses1 = lista_intereses[:len(fechas_formateadas)]
+        intereses1 = [int_ren1] * (año2 * 12 + mes2) + [int_ren2] * (len(fechas_formateadas) - (año2 * 12 + mes2))
         df1 = pd.DataFrame({'Fecha': fechas_formateadas, 'Intereses': intereses1})
         
         capital_actual = capital_jubilacion
