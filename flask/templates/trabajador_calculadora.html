@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Jubilación - Trabajador Único</title>
     <style>
@@ -75,7 +73,7 @@
 <body>
     <div class="container">
         <h1>Calculadora de Jubilación</h1>
-        <form action="/calcular_trabajador" method="post">
+        <form action="{{url_for(calcular_trabajador)}}" method="post">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
 
@@ -83,7 +81,7 @@
             <input type="number" id="edad_actual" name="edad_actual" required>
 
             <label for="edad_jubilacion">Edad de Jubilación:</label>
-            <input type="number" id="edad_jubilacion" name="edad_jubilacion" required>
+            <input type="number" id="años_trabajados" name="edad_jubilacion" required>
 
             <label for="salario_actual">Salario Actual (€):</label>
             <input type="number" id="salario_actual" name="salario_actual" required>
@@ -118,3 +116,4 @@
     </div>
 </body>
 </html>
+

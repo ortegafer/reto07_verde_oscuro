@@ -3,6 +3,8 @@ import pickle
 import math
 import datetime as dt
 
+df = pd.read_csv('Datos/Limpios/datos2_limpios.csv')
+
 
 def calculo_nomina(salario_actual, años_hasta_jubilación, ipc):
     redondeado = math.floor(años_hasta_jubilación)

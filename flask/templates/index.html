@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú Principal - Calculadora de Jubilación</title>
     <style>
@@ -65,12 +63,12 @@
     <div class="container">
         <header>
             <h1>Calculadora de Jubilación</h1>
-            <p>Selecciona una de las siguientes opciones para realizar lo cálculos</p>
+            <p>Selecciona una de las siguientes opciones para realizar los cálculos</p>
         </header>
 
         <div class="menu-options">
-            <a href="trabajador_calculadora.html" class="menu-option">Calcular para un Solo Trabajador</a>
-            <a href="csv_calculadora.html" class="menu-option">Cargar CSV con Datos de Varios Trabajadores</a>
+            <a href="{{url_for('calcular_trabajador')}}" class="menu-option">Calcular para un Solo Trabajador</a>
+            <a href="{{url_for('calcular_csv')}}" class="menu-option">Cargar CSV con Datos de Varios Trabajadores</a>
         </div>
     </div>
 </body>

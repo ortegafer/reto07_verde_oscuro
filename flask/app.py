@@ -8,7 +8,8 @@ import importlib.util
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
 
-app = Flask(__name__, template_folder='flask/templates')
+app = Flask(__name__)
+
 app.secret_key = 'jjjjj'
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -73,28 +74,29 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/calcular_trabajador', methods=['GET', 'POST'])
-@login_required
+@app.route('/calcular_trabajador', methods=['GET','POST'])
+
 def calcular_trabajador():
     resultado = None  
     if request.method == 'POST':
+        print(request.form)
         salario = float(request.form['salario'])
-        edad = int(request.form['edad'])
+        edad = int(request.form['edad_actual'])
         años_trabajados = int(request.form['años_trabajados'])
-        resultado = finanzas1.calculo_jubilacion(salario, edad, años_trabajados)
-        
-        
+        interes1 = float(request.form['interes_ahorro'])
+        interes2 = float(request.form['interes_renta'])
+        resultado = finanzas1.calcular_primas_jubilacion(salario, edad, años_trabajados, interes1, interes2, duración_interes1, interes_rendimiento1, interes_rendimiento2, duración_interés_rendimiento1,fecha_jubilacion)
         conn = sqlite3.connect(db_path)
         c = conn.cursor()
         c.execute("INSERT INTO calculos (usuario, salario, edad, años_trabajados, resultado) VALUES (?, ?, ?, ?, ?)",
                   (current_user.username, salario, edad, años_trabajados, resultado))
         conn.commit()
         conn.close()
-    
+
     return render_template('trabajador_calculadora.html', resultado=resultado)
 
-@app.route('/calcular_csv', methods=['GET', 'POST'])
-@login_required
+@app.route('/calcular_csv', methods=['GET','POST'])
+
 def calcular_csv():
     resultado_csv = None
     if request.method == 'POST':
@@ -107,13 +109,13 @@ def calcular_csv():
             else:
                 return "Formato no soportado"
             
-            df['resultado'] = df.apply(lambda row: finanzas2.procesar_csv(row), axis=1)
+            resultado_csv = finanzas2.calcular_primas_jubilacion_df(df)
             resultado_csv = df.to_html()
     
     return render_template('csv_calculadora.html', resultado_csv=resultado_csv)
 
 @app.route('/admin')
-@login_required
+
 def admin_dashboard():
     if current_user.username != "admin":
         return redirect(url_for('index'))

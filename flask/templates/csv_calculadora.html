@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Jubilación - Grupo de Trabajadores</title>
     <style>
         body {
@@ -69,7 +66,7 @@
 <body>
     <div class="container">
         <h1>Calculadora de Jubilación - Grupo de Trabajadores</h1>
-        <form action="/calcular_grupo" method="post" enctype="multipart/form-data">
+        <form action="{{url_for('calcular_csv')}}" method="post" enctype="multipart/form-data">
             <label for="archivo">Subir archivo CSV con los datos:</label>
             <input type="file" id="archivo" name="archivo" accept=".csv" required>
             <button type="submit">Calcular</button>
