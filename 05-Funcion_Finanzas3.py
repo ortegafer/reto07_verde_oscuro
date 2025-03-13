@@ -15,12 +15,10 @@ def calcular_monto_mensual(capital, intereses):
     sum=0
     for i in range(len(intereses)):
         num= 1
-        for j in range(0, len(intereses[:i+1])):
+        for j in range(0, len(intereses[:i])):
             num*=(1+intereses[j])**(-1)
         sum+= num
-    
-    monto = capital/sum
-    return monto
+    return capital/sum
 
 def calcular_primas_jubilacion_df(df, ipc, interes1, interes2, duracion_interes1, interes_rendimiento1, interes_rendimiento2, duracion_interes_rendimiento1):
     resultados = []
@@ -81,9 +79,3 @@ def calcular_primas_jubilacion_df(df, ipc, interes1, interes2, duracion_interes1
         resultados.append([row['ID'], capital_jubilacion, capital_actual, monto_mensual])
     
     return pd.DataFrame(resultados, columns=['ID', 'Capital Jubilación', 'Capital Actual', 'Monto Mensual'])
-
-# Cargar los datos y calcular resultados
-df_input = pd.read_csv('Datos/Limpios/datos1_limpios.csv', index_col=0)
-ipc_data = pd.read_excel('Datos/Originales/Dataset_1.xlsx', sheet_name='IPC')
-resultados_df = calcular_primas_jubilacion_df(df_input, ipc_data, 2, 1.5, [6,9], 2.5, 2, [7,0])
-print(resultados_df)
