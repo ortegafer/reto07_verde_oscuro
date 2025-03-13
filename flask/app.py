@@ -80,16 +80,36 @@ def calcular_trabajador():
     resultado = None  
     if request.method == 'POST':
         print(request.form)
-        salario = float(request.form['salario'])
-        edad = int(request.form['edad_actual'])
-        años_trabajados = int(request.form['años_trabajados'])
-        interes1 = float(request.form['interes_ahorro'])
-        interes2 = float(request.form['interes_renta'])
-        resultado = finanzas1.calcular_primas_jubilacion(salario, edad, años_trabajados, interes1, interes2, duración_interes1, interes_rendimiento1, interes_rendimiento2, duración_interés_rendimiento1,fecha_jubilacion)
+        
+        usuario = request.form['nombre']
+        salario = float(request.form['salario_actual'].replace(',', '.').strip())
+        edad = int(request.form['edad_actual'].strip())
+        años_trabajados = int(request.form['años_trabajados'].strip())
+        
+
+        #Función para convertir valores a float, manejando valores vacíos
+        def convertir_a_float(valor, valor_por_defecto=0.0):
+             valor = valor.replace(',', '.').strip()  # Reemplazar comas por puntos y eliminar espacios
+             return float(valor) if valor else valor_por_defecto  # Convertir si hay valor, sino usar el valor por defecto
+ 
+        #Obtener valores del formulario, asegurando que sean float y no listas
+        interes1 = convertir_a_float(request.form.getlist('interes_ahorro'))
+        interes2 = convertir_a_float(request.form.getlist('interes_renta'))
+        duracion_interes1 = convertir_a_float(request.form.getlist('interes_renta'))
+        interes_rendimiento1 = convertir_a_float(request.form.getlist('interes_rendimiento1')), 0.0
+        interes_rendimiento2 = convertir_a_float(request.form.getlist('interes_rendimiento2'))
+        duracion_interes_rendimiento1 = convertir_a_float(request.form.getlist('duracion_rendimiento1'))
+
+        resultado = finanzas1.calcular_primas_jubilacion(salario, edad, años_trabajados, interes1, interes2,duracion_interes1, interes_rendimiento1, interes_rendimiento2,duracion_interes_rendimiento1)
+
+        # Guardar en la base de datos con las variables correctas
         conn = sqlite3.connect(db_path)
         c = conn.cursor()
-        c.execute("INSERT INTO calculos (usuario, salario, edad, años_trabajados, resultado) VALUES (?, ?, ?, ?, ?)",
-                  (current_user.username, salario, edad, años_trabajados, resultado))
+        c.execute("""
+            INSERT INTO calculos 
+            (usuario, salario, edad, años_trabajados, interes1, interes2, duración_interes1, interes_rendimiento1, interes_rendimiento2, duración_interés_rendimiento1) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (usuario, salario, edad, años_trabajados, interes1, interes2,duracion_interes1, interes_rendimiento1, interes_rendimiento2, duracion_interes_rendimiento1))
         conn.commit()
         conn.close()
 

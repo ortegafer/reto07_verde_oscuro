@@ -73,15 +73,15 @@
 <body>
     <div class="container">
         <h1>Calculadora de Jubilación</h1>
-        <form action="{{url_for(calcular_trabajador)}}" method="post">
+        <form action="{{url_for('calcular_trabajador')}}" method="post">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
 
             <label for="edad_actual">Edad Actual:</label>
             <input type="number" id="edad_actual" name="edad_actual" required>
 
-            <label for="edad_jubilacion">Edad de Jubilación:</label>
-            <input type="number" id="años_trabajados" name="edad_jubilacion" required>
+            <label for="años_trabajados">Años trabajados:</label>
+            <input type="number" id="años_trabajados" name="años_trabajados" required>
 
             <label for="salario_actual">Salario Actual (€):</label>
             <input type="number" id="salario_actual" name="salario_actual" required>
@@ -109,7 +109,10 @@
 
             <label for="duracion_rendimiento1">Duración del primer interés de rendimiento (años, meses):</label>
             <input type="text" id="duracion_rendimiento1" name="duracion_rendimiento1" placeholder="Ejemplo: 7,0">
-            <small>Si no se introduce, se usará un interés constante.</small>
+
+            <label for="fecha_jubilacion">Fecha de la jubilación:</label>
+            <input type="text" id="fecha_jubilacion" name="fecha_jubilacion" placeholder="Ejemplo: 2046,01,01">
+            <small>Si no se introduce, se calculará en base a la edad de jubilación.</small>
             
             <button type="submit">Calcular</button>
         </form>
