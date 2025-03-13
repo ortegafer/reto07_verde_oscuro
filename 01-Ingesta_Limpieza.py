@@ -2,7 +2,6 @@
 # In: Datos originales
 # Out: Datos limpios
 import pandas as pd
-import packages.Preprocesamiento as ppr
 import os
 import datetime as dt
 import numpy as np 
@@ -47,7 +46,7 @@ if not os.path.exists(path_clean_data):
     os.makedirs(path_clean_data)
 
 file_clean = os.path.join(path_clean_data,'datos1_limpios.csv')
-ppr.save_clean_data(df, file_clean)
+df.to_csv(file_clean)
 
 #datos2_limpios.csv
 path_clean_data = os.path.join('Datos','Limpios')
@@ -55,4 +54,4 @@ if not os.path.exists(path_clean_data):
     os.makedirs(path_clean_data)
 
 file_clean = os.path.join(path_clean_data,'datos2_limpios.csv')
-ppr.save_clean_data(df2, file_clean)
+df2.to_csv(file_clean)

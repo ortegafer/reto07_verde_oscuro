@@ -1,3 +1,6 @@
+# INGESTA
+# In: Datos IPC
+# Out: Re
 def calculo_nomina(salario_actual, años_hasta_jubilación):
     import math
     import pandas as pd
