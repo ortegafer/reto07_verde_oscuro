@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de la Calculadora de Jubilación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #28a745;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resultados de la Calculadora de Jubilación</h1>
+        <p>A continuación se presentan los resultados de los cálculos basados en los datos proporcionados:</p>
+
+        <!-- Mostrar el DataFrame de resultados -->
+        <div>
+            {{ resultados | safe }}
+        </div>
+
+        <a href="{{ url_for('index') }}">
+            <button>Volver a la Calculadora</button>
+        </a>
+    </div>
+</body>
+</html>

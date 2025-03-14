@@ -1,14 +1,16 @@
-# INGESTA
+# FUNCIÓN QUE CALCULA LOS 3 FLUJOS DE CAJA PARA TRABAJADORES DE MANERA INDIVIDUAL
 # In: Datos IPC
-# Out: Re
-def calculo_nomina(salario_actual, años_hasta_jubilación):
-    import math
-    import pandas as pd
+# Out: 3 flujos de caja
+import pandas as pd
+import pickle
+import math
+import datetime as dt
+
+def calculo_nomina(salario_actual, años_hasta_jubilación, ipc):
     redondeado = math.floor(años_hasta_jubilación)
     salario = salario_actual
-    ipc= pd.read_excel('Datos/Originales/Dataset_1.xlsx', sheet_name='IPC')
     for i in range(0, redondeado):
-        salario = salario + salario*ipc.iloc[i,1]
+        salario = salario + salario * ipc.iloc[i, 1]
     return float(salario)
 
 def calcular_monto_mensual(capital, intereses):
@@ -21,6 +23,8 @@ def calcular_monto_mensual(capital, intereses):
     
     monto = capital/sum
     return monto
+
+
 
 def calcular_primas_jubilacion(salario, edad, años_trabajados, interes1, interes2, duración_interes1, interes_rendimiento1, interes_rendimiento2, duración_interés_rendimiento1, fecha_jubilación= None):
     import datetime as dt
@@ -36,7 +40,8 @@ def calcular_primas_jubilacion(salario, edad, años_trabajados, interes1, intere
         fecha_jubilacion = pd.to_datetime(fecha_jubilación).date()
         años_hasta_jubilacion = (fecha_jubilacion - dt.date(2025, 1, 1)).days / 365  # 🔹 Cálculo corregido 🔹
         
-    salario_final= calculo_nomina(salario, años_hasta_jubilacion)
+    ipc_data = pd.read_excel('Datos/Originales/Dataset_1.xlsx', sheet_name='IPC')
+    salario_final= calculo_nomina(salario, años_hasta_jubilacion, ipc_data)
     porcentaje_renta = min((años_trabajados // 4) * 0.0225, 0.19)
     m1 = (salario_final * porcentaje_renta)/12
     date_range = pd.date_range(start=fecha_jubilacion, periods=22*12, freq='MS')
@@ -90,5 +95,5 @@ def calcular_primas_jubilacion(salario, edad, años_trabajados, interes1, intere
     return capital_jubilacion, capital_actual, monto_mensual
 
 
-print(calcular_primas_jubilacion(15319.07,51,36,2,1.5, [6,9], 2.5, 2, [7,0], '2038-11-20'))
+#print(calcular_primas_jubilacion(15319.07,51,36,2,1.5, [6,9], 2.5, 2, [7,0], '2038-11-20'))
 print(calcular_primas_jubilacion(15319.07,51,36,2,1.5, [6,9], 2.5, 2, [7,0]))

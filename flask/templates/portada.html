@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido a la Calculadora de Jubilación</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Estilos personalizados -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #d5e1e8);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 700px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        p {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .btn {
+            padding: 12px 25px;
+            margin: 10px;
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #28a745;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: #3498db;
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 2rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenido a la Calculadora de Jubilación</h1>
+        <p>
+            Con esta herramienta podrás calcular tu jubilación futura y estimar las rentas mensuales basadas en tus datos.
+            ¡Comienza ahora mismo!
+        </p>
+        
+        <!-- Botones para las acciones -->
+        <div class="btn-container">
+            <a href="{{ url_for('trabajador_calculadora3') }}" class="btn btn-primary">Ir a la Calculadora de Jubilación</a>
+            <a href="{{ url_for('cargar_csv') }}" class="btn btn-secondary">Cargar un Archivo CSV</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (opcional, solo si necesitas funcionalidades JS de Bootstrap) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,3 +1,6 @@
+# FUNCIÓN QUE CALCULA LOS 3 FLUJOS DE CAJA PARA TODOS LOS TRABAJADORES
+# In: Datos trabajadores y Datos IPC
+# Out: 3 flujos de caja para cada trabajador
 import pandas as pd
 import pickle
 import math
